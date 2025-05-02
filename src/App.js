@@ -6,13 +6,13 @@ import PostGet from "./components/pages/post/PostGet/PostGet";
 import PostEdit from "./components/pages/post/PostEdit/PostEdit";
 import About from "./components/pages/About/About";
 import {Container} from "react-bootstrap";
-import NavBar from "./components/views/NavBar/NavBar";
 import Footer from "./components/views/Footer/Footer";
+import Header from "./components/views/Header/Header";
 
 const App = () => {
   return (
     <Container>
-      <NavBar/>
+      <Header/>
       <Routes>
         <Route path="*" element={<NotFound/>}/>
         <Route path="/" element={<Home/>}/>
