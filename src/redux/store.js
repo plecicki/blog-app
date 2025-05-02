@@ -3,8 +3,14 @@ import initialState from './initialState';
 
 export const getAllPosts = ({posts}) => posts;
 
+export const getPostById = ({posts}, postId) => posts.find(post => post.id === postId);
+
+export const deletePostById = payload => ({type: 'DELETE_POST', postId: payload});
+
 const postsReducer = (statePart = [], action) => {
   switch (action.type) {
+    case 'DELETE_POST':
+      return [...statePart.filter(post => post.id!==action.postId)];
     default:
       return statePart;
   }
