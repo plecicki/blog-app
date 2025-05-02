@@ -2,7 +2,6 @@ import {useSelector} from "react-redux";
 import {getAllPosts} from "../../../redux/store";
 import {Link} from "react-router-dom";
 import {Button, Card, Col, Container, Row} from "react-bootstrap";
-import {clsx} from "clsx";
 
 const Home = () => {
 
@@ -11,7 +10,12 @@ const Home = () => {
   return (
     <section className="py-4">
       <Container>
-        <h2 className="mb-4">All posts</h2>
+        <div className="d-flex justify-content-between align-items-center mb-4">
+          <h2>All posts</h2>
+          <Button as={Link} to="/post/add" variant="outline-primary">
+            Add post
+          </Button>
+        </div>
         <Row className="g-4">
           {posts.map(post => (
             <Col key={post.id} md={6} lg={4}>
