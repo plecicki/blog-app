@@ -1,10 +1,23 @@
-import { createStore, combineReducers } from 'redux';
+import {createStore} from 'redux';
 import initialState from './initialState';
 
-const subreducers = {
+export const getAllPosts = ({posts}) => posts;
+
+const postsReducer = (statePart = [], action) => {
+  switch (action.type) {
+    default:
+      return statePart;
+  }
 }
 
-const reducer = combineReducers(subreducers);
+const reducer = (state, action) => {
+  const newState = {
+    posts: postsReducer(state.posts, action),
+  };
+
+  return newState;
+};
+
 const store = createStore(
   reducer,
   initialState,
