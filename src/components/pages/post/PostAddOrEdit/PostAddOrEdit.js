@@ -1,28 +1,45 @@
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {useState} from "react";
-import {addPost} from "../../../../redux/store";
+import {addPost, getPostById} from "../../../../redux/store";
 import {Button, Container, Form} from "react-bootstrap";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
+import {
+  addOrEditPost,
+  authorInitState,
+  contentInitState, getAddOrEditLabel,
+  publishedDateInitState,
+  shortDescriptionInitState,
+  titleInitState
+} from "./AddOrEditDifferenciator";
+import {postObjectWithEmptyFields} from "./AddOrEditHelper";
 
-const PostAdd = () => {
-  const [title, setTitle] = useState('');
-  const [shortDescription, setShortDescription] = useState('');
-  const [content, setContent] = useState('');
-  const [publishedDate, setPublishedDate] = useState('');
-  const [author, setAuthor] = useState('');
+const PostAddOrEdit = ({actionType}) => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const { id } = useParams();
+  let post = useSelector(state => getPostById(state, id));
+  if (!id) post = postObjectWithEmptyFields;
+
+  const [title, setTitle] = useState(titleInitState(actionType, post.title));
+  const [shortDescription, setShortDescription] = useState(shortDescriptionInitState(actionType, post.shortDescription));
+  const [content, setContent] = useState(contentInitState(actionType, post.content));
+  const [publishedDate, setPublishedDate] = useState(publishedDateInitState(actionType, post.publishedDate));
+  const [author, setAuthor] = useState(authorInitState(actionType, post.author));
+
   const handleSubmit = e => {
     e.preventDefault();
-    dispatch(addPost({title, shortDescription, content, publishedDate, author}));
+    dispatch(addOrEditPost(actionType, id, title, shortDescription,
+      content, publishedDate, author));
     navigate('/');
   };
 
   return (
     <Container className="py-4">
-      <h2 className="mb-4">Add post</h2>
+      <h2 className="mb-4">
+        {getAddOrEditLabel(actionType)} post
+      </h2>
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3">
           <Form.Label>Title</Form.Label>
@@ -82,7 +99,7 @@ const PostAdd = () => {
 
         <div className="d-flex justify-content-start">
           <Button variant="primary" type="submit">
-            Add post
+            {getAddOrEditLabel(actionType)} post
           </Button>
         </div>
       </Form>
@@ -90,4 +107,4 @@ const PostAdd = () => {
   );
 };
 
-export default PostAdd;
+export default PostAddOrEdit;

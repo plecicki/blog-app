@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { deletePostById, getPostById } from "../../../../redux/store";
-import { Navigate, useParams } from "react-router-dom";
+import {Link, Navigate, useParams} from "react-router-dom";
 import { Button } from "react-bootstrap";
 import { useState } from "react";
 import PostDelete from "../PostDelete/PostDelete";
@@ -28,7 +28,7 @@ const PostGet = () => {
           <div className="d-flex justify-content-between align-items-start mb-3">
             <h2 className="mb-0">{post.title}</h2>
             <div>
-              <Button variant="outline-info" size="sm" className="me-2">Edit</Button>
+              <Button variant="outline-info" size="sm" className="me-2" as={Link} to={`/post/edit/${post.id}`}>Edit</Button>
               <Button variant="outline-danger" size="sm" onClick={handleShow}>Delete</Button>
             </div>
           </div>

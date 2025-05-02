@@ -1,9 +1,8 @@
 import {Route, Routes} from "react-router-dom";
 import NotFound from "./components/pages/NotFound/NotFound";
 import Home from "./components/pages/Home/Home";
-import PostAdd from "./components/pages/post/PostAdd/PostAdd";
+import PostAddOrEdit from "./components/pages/post/PostAddOrEdit/PostAddOrEdit";
 import PostGet from "./components/pages/post/PostGet/PostGet";
-import PostEdit from "./components/pages/post/PostEdit/PostEdit";
 import About from "./components/pages/About/About";
 import {Container} from "react-bootstrap";
 import Footer from "./components/views/Footer/Footer";
@@ -17,8 +16,8 @@ const App = () => {
         <Route path="*" element={<NotFound/>}/>
         <Route path="/" element={<Home/>}/>
         <Route path="/post/:id" element={<PostGet/>}/>
-        <Route path="/post/add" element={<PostAdd/>}/>
-        <Route path="/post/edit/:id" element={<PostEdit/>}/>
+        <Route path="/post/add" element={<PostAddOrEdit actionType='ADD'/>}/>
+        <Route path="/post/edit/:id" element={<PostAddOrEdit actionType='EDIT'/>}/>
         <Route path="/about" element={<About/>}/>
       </Routes>
       <Footer/>
