@@ -34,7 +34,8 @@ const PostGet = () => {
           </div>
           <p><strong>Author:</strong> {post.author}</p>
           <p><strong>Published:</strong> {post.publishedDate}</p>
-          <p>{post.content}</p>
+          <p><strong>Category:</strong> {post.category}</p>
+          <p dangerouslySetInnerHTML={{ __html: post.content }}/>
         </div>
       </div>
 

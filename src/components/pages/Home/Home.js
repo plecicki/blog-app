@@ -1,11 +1,8 @@
-import {useSelector} from "react-redux";
-import {getAllPosts} from "../../../redux/store";
 import {Link} from "react-router-dom";
-import {Button, Card, Col, Container, Row} from "react-bootstrap";
+import {Button, Container, Row} from "react-bootstrap";
+import PostCards from "../post/PostCards/PostCards";
 
 const Home = () => {
-
-  const posts = useSelector(state => getAllPosts(state));
 
   return (
     <section className="py-4">
@@ -16,27 +13,7 @@ const Home = () => {
             Add post
           </Button>
         </div>
-        <Row className="g-4">
-          {posts.map(post => (
-            <Col key={post.id} md={6} lg={4}>
-              <Card className="h-100 shadow-sm">
-                <Card.Body>
-                  <Card.Title>{post.title}</Card.Title>
-                  <Card.Text className="mb-1">
-                    <strong>Author:</strong> {post.author}
-                  </Card.Text>
-                  <Card.Text className="mb-1">
-                    <strong>Published:</strong> {post.publishedDate}
-                  </Card.Text>
-                  <Card.Text>{post.shortDescription}</Card.Text>
-                  <Button as={Link} to={`/post/${post.id}`}>
-                    Read more
-                  </Button>
-                </Card.Body>
-              </Card>
-            </Col>
-          ))}
-        </Row>
+        <PostCards/>
       </Container>
     </section>
   )

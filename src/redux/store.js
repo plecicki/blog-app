@@ -2,6 +2,11 @@ import {createStore} from 'redux';
 import initialState from './initialState';
 import shortid from 'shortid';
 
+export const getAllCategories = ({categories}) => categories;
+
+export const getPostsByCategory = ({posts}, category) =>
+  posts.filter(post => post.category.toLowerCase() === category.toLowerCase());
+
 export const getAllPosts = ({posts}) => posts;
 
 export const getPostById = ({posts}, postId) => posts.find(post => post.id === postId);
@@ -28,9 +33,17 @@ const postsReducer = (statePart = [], action) => {
   }
 }
 
+const categoriesReducer = (statePart = [], action) => {
+  switch (action.type) {
+    default:
+      return statePart;
+  }
+}
+
 const reducer = (state, action) => {
   const newState = {
     posts: postsReducer(state.posts, action),
+    categories: categoriesReducer(state.categories, action)
   };
 
   return newState;

@@ -1,17 +1,15 @@
 import {useDispatch, useSelector} from "react-redux";
 import {useState} from "react";
-import {addPost, getPostById} from "../../../../redux/store";
+import {getAllCategories, getPostById} from "../../../../redux/store";
 import {Button, Container, Form} from "react-bootstrap";
 import {useNavigate, useParams} from "react-router-dom";
 import {
-  addOrEditPost,
-  authorInitState,
-  contentInitState, getAddOrEditLabel,
-  publishedDateInitState,
-  shortDescriptionInitState,
-  titleInitState
+  addOrEditPost, authorInitState, categoryInitState, contentInitState,
+  getAddOrEditLabel, publishedDateInitState, shortDescriptionInitState, titleInitState
 } from "./AddOrEditDifferenciator";
 import {postObjectWithEmptyFields} from "./AddOrEditHelper";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 const PostAddOrEdit = ({actionType}) => {
 
@@ -22,16 +20,19 @@ const PostAddOrEdit = ({actionType}) => {
   let post = useSelector(state => getPostById(state, id));
   if (!id) post = postObjectWithEmptyFields;
 
+  const categories = useSelector(state => getAllCategories(state));
+
   const [title, setTitle] = useState(titleInitState(actionType, post.title));
   const [shortDescription, setShortDescription] = useState(shortDescriptionInitState(actionType, post.shortDescription));
   const [content, setContent] = useState(contentInitState(actionType, post.content));
   const [publishedDate, setPublishedDate] = useState(publishedDateInitState(actionType, post.publishedDate));
   const [author, setAuthor] = useState(authorInitState(actionType, post.author));
+  const [category, setCategory] = useState(categoryInitState(actionType, post.category));
 
   const handleSubmit = e => {
     e.preventDefault();
     dispatch(addOrEditPost(actionType, id, title, shortDescription,
-      content, publishedDate, author));
+      content, publishedDate, category, author));
     navigate('/');
   };
 
@@ -74,6 +75,20 @@ const PostAddOrEdit = ({actionType}) => {
         </Form.Group>
 
         <Form.Group className="mb-3">
+          <Form.Label>Category</Form.Label>
+          <Form.Select
+            value={category}
+            onChange={e => setCategory(e.target.value)}
+            required
+          >
+            <option value="">Select category...</option>
+            {categories.map(cat => (
+              <option key={cat} value={cat}>{cat}</option>
+            ))}
+          </Form.Select>
+        </Form.Group>
+
+        <Form.Group className="mb-3">
           <Form.Label>Short description</Form.Label>
           <Form.Control
             as="textarea"
@@ -87,14 +102,37 @@ const PostAddOrEdit = ({actionType}) => {
 
         <Form.Group className="mb-4">
           <Form.Label>Main content</Form.Label>
+          <div className="bg-white rounded border">
+            <ReactQuill
+              theme="snow"
+              value={content}
+              onChange={setContent}
+              placeholder="Leave a comment here"
+              modules={{
+                toolbar: [
+                  ['bold', 'italic', 'underline'],
+                  [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                  ['link'],
+                  ['clean']
+                ]
+              }}
+              formats={[
+                'bold', 'italic', 'underline',
+                'list', 'bullet',
+                'link'
+              ]}
+            />
+          </div>
           <Form.Control
-            as="textarea"
-            rows={8}
-            placeholder="Leave a comment here"
+            type="hidden"
             value={content}
-            onChange={e => setContent(e.target.value)}
+            onChange={() => {}}
+            isInvalid={!content || content === '<p><br></p>'}
             required
           />
+          <Form.Control.Feedback type="invalid">
+            Content is required
+          </Form.Control.Feedback>
         </Form.Group>
 
         <div className="d-flex justify-content-start">
